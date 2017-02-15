@@ -29,9 +29,9 @@ def construct_fields(options):
         # https://docs.djangoproject.com/en/1.10/ref/models/fields/#django.db.models.ForeignKey.related_query_name
         is_no_backref = str(name).endswith('+')
         if is_not_in_only or is_excluded or is_no_backref:
-            # We skip this field if we specify only_fields and is not
-            # in there. Or when we exclude this field in exclude_fields.
-            # Or when there is no back reference.
+            # We skip fields that are not part of `only_fields` or those
+            # that are part of `excelude_fields` or those which hanve no
+            # back reference (see above link)
             continue
         converted = convert_django_field_with_choices(field, options.registry)
         if not converted:

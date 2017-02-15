@@ -37,6 +37,7 @@ class DjangoConnectionField(ConnectionField):
         return self.type._meta.node._meta.model
 
     def get_manager(self):
+        # TODO: Document this: allow custom managers.
         if self.on:
             return getattr(self.model, self.on)
         else:
