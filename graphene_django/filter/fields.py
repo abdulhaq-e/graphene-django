@@ -4,8 +4,8 @@ from collections import OrderedDict
 from functools import partial
 
 from graphene.types.argument import to_arguments
-from ..fields import DjangoConnectionField
 from graphene.relay import is_node
+from ..fields import DjangoConnectionField
 from .utils import get_filtering_args_from_filterset, get_filterset_class
 
 
@@ -26,7 +26,9 @@ class DjangoFilterConnectionField(DjangoConnectionField):
     def node_type(self):
         if inspect.isfunction(self._type) or inspect.ismethod(self._type):
             return self._type()
-        return self._type
+        elif is_node(self._type):
+            return self._type       
+        return self._type._meta.node
 
     @property
     def order_by(self):
@@ -35,8 +37,7 @@ class DjangoFilterConnectionField(DjangoConnectionField):
     @property
     def meta(self):
         meta = dict(model=self.node_type._meta.model,
-                    fields=self.fields,
-                    order_by=self.order_by)
+                    fields=self.fields)
         if self._extra_filter_meta:
             meta.update(self._extra_filter_meta)
         return meta
