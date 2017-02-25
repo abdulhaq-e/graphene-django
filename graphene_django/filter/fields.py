@@ -27,7 +27,7 @@ class DjangoFilterConnectionField(DjangoConnectionField):
         if inspect.isfunction(self._type) or inspect.ismethod(self._type):
             return self._type()
         elif is_node(self._type):
-            return self._type       
+            return self._type
         return self._type._meta.node
 
     @property
